@@ -1,0 +1,50 @@
+train_number,hour,day,month,route,delay_minutes
+12423,06,12,04,Dibrugarh–New Delhi Rajdhani,35
+15959,08,13,04,Kamrup Express (Howrah–Dibrugarh),20
+12505,15,13,04,North East Express (Guwahati–Anand Vihar),45
+15635,10,14,04,Guwahati–Okha Express,30
+12509,17,14,04,Guwahati–Bengaluru Express,50
+15903,19,15,04,Dibrugarh–Chandigarh Express,25
+15668,21,15,04,Kolkata–Dibrugarh Express,40
+15657,07,16,04,Kanchanjunga Express (Sealdah–Silchar),15
+15610,09,16,04,Guwahati–Chennai Express,55
+15646,11,16,04,Guwahati–Lokmanya Tilak (Mumbai),60
+15636,13,16,04,Okha–Guwahati Express,35
+15662,16,16,04,Kolkata–Silchar Express,20
+15620,18,16,04,Guwahati–Mata Vaishno Devi (Katra),45
+15653,20,16,04,Amarnath Express (Guwahati–Jammu Tawi),50
+15630,22,16,04,Guwahati–Delhi Mail,40
+15640,05,17,04,Guwahati–Puri Express,25
+15644,07,17,04,Guwahati–Delhi Express,35
+15654,09,17,04,Amarnath Express (Jammu Tawi–Guwahati),50
+15660,11,17,04,Kolkata–Guwahati Express,30
+15661,13,17,04,Silchar–Sealdah Express,20
+15663,15,17,04,Agartala–Sealdah Express,25
+15664,17,17,04,Sealdah–Agartala Express,30
+15665,19,17,04,Agartala–Bengaluru Express,55
+15666,21,17,04,Bengaluru–Agartala Express,60
+15667,23,17,04,Silchar–New Delhi Express,45
+15669,06,18,04,Alipurduar–Delhi Express,35
+15670,08,18,04,Delhi–Alipurduar Express,40
+15671,10,18,04,Guwahati–Delhi Express,50
+15672,12,18,04,Delhi–Guwahati Express,55
+15673,14,18,04,Guwahati–Chennai Express,60
+15674,16,18,04,Chennai–Guwahati Express,65
+15675,18,18,04,Guwahati–Hyderabad Express,70
+15676,20,18,04,Hyderabad–Guwahati Express,75
+15677,22,18,04,Guwahati–Mumbai Express,80
+15678,05,19,04,Mumbai–Guwahati Express,85
+15679,07,19,04,Guwahati–Ahmedabad Express,60
+15680,09,19,04,Ahmedabad–Guwahati Express,65
+15681,11,19,04,Guwahati–Kolkata Express,30
+15682,13,19,04,Kolkata–Guwahati Express,35
+15683,15,19,04,Guwahati–Patna Express,40
+15684,17,19,04,Patna–Guwahati Express,45
+15685,19,19,04,Guwahati–Lucknow Express,50
+15686,21,19,04,Lucknow–Guwahati Express,55
+15687,23,19,04,Guwahati–Varanasi Express,60
+15688,06,20,04,Varanasi–Guwahati Express,65
+15689,08,20,04,Guwahati–Delhi Express,70
+15690,10,20,04,Delhi–Guwahati Express,75
+15691,12,20,04,Guwahati–Sealdah Express,30
+15692,14,20,04,Sealdah–Guwahati Express,35
