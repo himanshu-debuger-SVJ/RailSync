@@ -1,123 +1,129 @@
 import streamlit as st
 import pandas as pd
-import time
+import numpy as np
 
 # ---------------- PAGE CONFIG ----------------
 st.set_page_config(page_title="RailSync", layout="wide")
 
-# ---------------- LOAD DATA ----------------
-df = pd.read_csv("data.csv")
+# ---------------- LIGHT THEME CSS ----------------
 
-# ---------------- CUSTOM STYLE ----------------
-st.markdown("""
-    <style>
-    .main {background-color: #0e1117;}
-    h1, h2, h3 {color: #ffffff;}
-    </style>
-""", unsafe_allow_html=True)
 
 # ---------------- HEADER ----------------
-st.markdown(
-    "<h1 style='text-align: center;'>🚆 RailSync: Smart Railway Intelligence System</h1>",
-    unsafe_allow_html=True
-)
+st.markdown("<div class='main-title'>🚆 RailSync</div>", unsafe_allow_html=True)
+st.markdown("<div class='subtitle'>Smart Railway Intelligence System</div>", unsafe_allow_html=True)
 
-st.markdown(
-    "<p style='text-align: center;'>Predict • Track • Optimize Train Operations</p>",
-    unsafe_allow_html=True
-)
-
-# ---------------- TRAIN SELECTION ----------------
-st.markdown("### 🔎 Track Your Train")
-
-train_numbers = df["train_number"].unique()
-train_no = st.selectbox("Select Train Number", train_numbers)
-
-train_data = df[df["train_number"] == train_no].iloc[0]
-route = train_data["route"]
-delay = train_data["delay_minutes"]
-
-# ---------------- KPI CARDS ----------------
-st.markdown("### 📊 RailSync Dashboard")
-
-col1, col2, col3 = st.columns(3)
-
-col1.metric("🚆 Train No", train_no)
-col2.metric("📍 Route", route)
-col3.metric("⏱ Delay (min)", delay)
-
-# ---------------- STATUS ----------------
 st.markdown("---")
-st.subheader("📌 Live Status")
 
-if delay <= 5:
-    st.success("✅ Running On Time")
-elif delay <= 30:
-    st.warning("⚠️ Slight Delay")
-else:
-    st.error("🚨 Major Delay")
-
-# ---------------- MAP TRACKING ----------------
-st.markdown("---")
-st.subheader("🗺️ Live Train Tracking")
-
-route_coords = {
-    "Dibrugarh–New Delhi Rajdhani": [(27.47, 94.91), (25.31, 82.97), (28.61, 77.20)],
-    "Kamrup Express (Howrah–Dibrugarh)": [(22.57, 88.36), (25.31, 82.97), (27.47, 94.91)],
-    "Guwahati–Delhi Express": [(26.14, 91.73), (25.31, 82.97), (28.61, 77.20)]
+# ---------------- SAMPLE DATA ----------------
+train_data = {
+    "train_number": 12423,
+    "route": "Dibrugarh–New Delhi Rajdhani",
+    "delay": 35,
+    "previous": "Dibrugarh",
+    "current": "Guwahati",
+    "next": "Patna"
 }
 
-coords = route_coords.get(route, [(26.14, 91.73)])
+# ---------------- TOP SECTION ----------------
+col1, col2, col3 = st.columns(3)
 
-if st.button("▶️ Start Tracking"):
+# Track Train
+with col1:
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
+    st.markdown("<div class='section-title'>🔎 Track Your Train</div>", unsafe_allow_html=True)
+    train_no = st.text_input("Train Number", "12423")
+    st.markdown("</div>", unsafe_allow_html=True)
 
-    st.info("🚆 RailSync tracking in progress...")
+# Train Info
+with col2:
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
+    st.markdown(f"<b>{train_data['train_number']}</b>", unsafe_allow_html=True)
+    st.write(train_data["route"])
+    st.markdown("<span class='badge badge-red'>Major Delay</span>", unsafe_allow_html=True)
+    st.write(f"{train_data['delay']} min delay")
+    st.markdown("</div>", unsafe_allow_html=True)
 
-    map_placeholder = st.empty()
+# Predictor
+with col3:
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
+    st.markdown("<div class='section-title'>⏱ Delay Predictor</div>", unsafe_allow_html=True)
 
-    for point in coords:
-        map_data = pd.DataFrame({
-            "lat": [point[0]],
-            "lon": [point[1]]
-        })
+    route = st.selectbox("Route", [train_data["route"]], key="route1")
 
-        map_placeholder.map(map_data)
-        time.sleep(1)
+    if st.button("Predict Delay"):
+        st.success("Prediction: Major Delay 🚨")
 
-# ---------------- SMART REROUTING ----------------
-st.markdown("---")
-st.subheader("🚦 RailSync Smart Rerouting")
+    st.markdown("</div>", unsafe_allow_html=True)
 
-avg_delay = df.groupby("route")["delay_minutes"].mean()[route]
+# ---------------- LIVE + REROUTING ----------------
+col4, col5 = st.columns(2)
 
-st.write(f"📊 Average Delay: {avg_delay:.2f} minutes")
+# Live Train Status
+with col4:
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
+    st.markdown("<div class='section-title'>📍 Live Train Status</div>", unsafe_allow_html=True)
 
-if avg_delay > 40:
-    st.error("🚨 High Congestion Detected")
-    st.success("🔄 RailSync Suggestion: Full Rerouting Recommended")
+    st.write(f"Previous Station: **{train_data['previous']}**")
+    st.write(f"Current Station: **{train_data['current']}**")
+    st.write(f"Next Station: **{train_data['next']}**")
 
-elif avg_delay > 20:
-    st.warning("⚠️ Moderate Congestion")
+    st.markdown("<span class='badge badge-red'>HEAVILY DELAYED</span>", unsafe_allow_html=True)
 
-    st.write("### 🔄 RailSync Optimization Suggestions")
-    st.info("🕒 Adjust departure timing by 30–60 minutes")
-    st.info("🚄 Optimize speed in low-traffic zones")
-    st.info("🔀 Apply partial rerouting")
-    st.info("🚉 Use alternate platforms at major stations")
+    st.markdown("### Journey Progress")
+    stations = ["Dibrugarh", "Guwahati", "Patna", "Varanasi", "New Delhi"]
 
-else:
-    st.success("✅ Route is Operating Efficiently")
+    for s in stations:
+        if s == train_data["current"]:
+            st.write(f"🔵 {s}")
+        elif stations.index(s) < stations.index(train_data["current"]):
+            st.write(f"✅ {s}")
+        else:
+            st.write(f"⚪ {s}")
+
+    st.markdown("</div>", unsafe_allow_html=True)
+
+# Smart Rerouting
+with col5:
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
+    st.markdown("<div class='section-title'>🔁 Smart Rerouting</div>", unsafe_allow_html=True)
+
+    problem = st.text_area("Problem Description", "Track congestion near Guwahati")
+
+    if st.button("Generate Suggestions"):
+        st.success("Use alternate route via Barauni → Patna")
+        st.info("Delay can be reduced by ~15 minutes")
+
+    st.markdown("</div>", unsafe_allow_html=True)
+
+# ---------------- MAP ----------------
+st.markdown("<div class='card'>", unsafe_allow_html=True)
+st.markdown("<div class='section-title'>🗺 Live Train Tracking</div>", unsafe_allow_html=True)
+
+map_data = pd.DataFrame({
+    "lat": [26.14],
+    "lon": [91.73]
+})
+
+st.map(map_data)
+
+st.markdown("</div>", unsafe_allow_html=True)
 
 # ---------------- ANALYTICS ----------------
-st.markdown("---")
-st.subheader("📊 RailSync Analytics: Top Delayed Routes")
+st.markdown("<div class='card'>", unsafe_allow_html=True)
+st.markdown("<div class='section-title'>📊 Operational Analytics</div>", unsafe_allow_html=True)
 
-top_routes = df.groupby("route")["delay_minutes"].mean().sort_values(ascending=False).head(5)
-st.bar_chart(top_routes)
+col6, col7 = st.columns(2)
 
-# ---------------- FOOTER ----------------
-st.markdown("---")
-st.markdown(
-    "<p style='text-align: center;'>🚆 RailSync | AI-Powered Railway Optimization System</p>",
-    unsafe_allow_html=True
-)
+with col6:
+    st.write("Top Delayed Routes")
+    routes = ["Mumbai–Guwahati", "Delhi–Guwahati", "Hyderabad–Guwahati"]
+    delays = [80, 60, 70]
+    st.bar_chart(pd.DataFrame({"Delay": delays}, index=routes))
+
+with col7:
+    st.write("Average Delay Over Time")
+    time = list(range(24))
+    values = np.random.randint(20, 80, size=24)
+    st.line_chart(pd.DataFrame(values, index=time, columns=["Delay"]))
+
+st.markdown("</div>", unsafe_allow_html=True)
